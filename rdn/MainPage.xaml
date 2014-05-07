@@ -58,6 +58,7 @@
             <PasswordBox HorizontalAlignment="Left" Margin="2,66,-2,0" VerticalAlignment="Top" Width="456" Name="passbox"/>
             <TextBox HorizontalAlignment="Left" Height="399" Margin="0,208,0,0" TextWrapping="Wrap" Text="Your Message Here" VerticalAlignment="Top" Width="456" Name="statusbox" MaxLength="1002"/>
             <Button Content="Post" HorizontalAlignment="Right" Margin="0,140,-2,395" VerticalAlignment="Center" Name="sendmsg" Click="sendmsg_Click"/>
+            <Button Content="Button" HorizontalAlignment="Left" Margin="10,143,0,0" VerticalAlignment="Top" Click="button_Click" Visibility="Collapsed"/>
         </Grid>
 
 

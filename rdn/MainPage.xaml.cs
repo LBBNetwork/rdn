@@ -42,8 +42,6 @@ namespace rdn
 
             private void sendmsg_Click(object sender, EventArgs e)
             {
-
-
                 var statusText = statusbox.Text;
                 var req = WebRequest.Create("http://rainbowdash.net/api/statuses/update.xml");
                 req.Method = "POST";
@@ -78,7 +76,10 @@ namespace rdn
                                 if (ex.Response != null)
                                     HandleResponse(ex.Response);
                                 else
-                                    MessageBox.Show(ex.Response.ToString());
+                                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                                    {
+                                        MessageBox.Show(ex.Response.ToString());
+                                    });
                                 // Don’t try to call req.BeginGetResponse() *now*, heh.
                                 return;
                             }
@@ -92,11 +93,14 @@ namespace rdn
                                     }
                                     catch (WebException ex)
                                     {
-                                        if(ex.Response != null)
+                                        if (ex.Response != null)
                                             HandleResponse(ex.Response);
                                         else
-                                            // ex.ToString() might be used to give the user information, like hostname unresolvable, etc.. Basically anything where we didn’t manage to get a response at all from the sserver.
-                                            MessageBox.Show(ex.ToString());
+                                            Deployment.Current.Dispatcher.BeginInvoke(() =>
+                                            {
+                                                // ex.ToString() might be used to give the user information, like hostname unresolvable, etc.. Basically anything where we didn’t manage to get a response at all from the sserver.
+                                                MessageBox.Show(ex.ToString());
+                                            });
                                     }
                                    // var something = req.EndGetResponse(_ar);
                                   //  MessageBox.Show("Something went wrong");
@@ -104,6 +108,7 @@ namespace rdn
                         }, null);
 
                         statusbox.Text = "";
+                        NavigationService.GoBack();
                     }
                 }
                 
@@ -133,13 +138,20 @@ namespace rdn
                     // See if we can find <hash><error/></hash> and the textcontent of <error/>.
                     using (var reader = XmlReader.Create(response.GetResponseStream()))
                         if (reader.ReadToFollowing("error"))
-                            MessageBox.Show(reader.ReadElementContentAsString());
+                        {
+                            Deployment.Current.Dispatcher.BeginInvoke(() =>
+                            {
+                                MessageBox.Show(reader.ReadElementContentAsString());
+                            });
+                        }
                 }
             }
         }
 
-
-
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.GoBack();
+        }
             // Sample code for building a localized ApplicationBar
             //private void BuildLocalizedApplicationBar()
             //{
